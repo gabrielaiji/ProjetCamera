@@ -9,7 +9,7 @@ public class MovementPath : MonoBehaviour
     public PathTypes pathType;
     public int movementDirection = 1; //sens horaire : 1 ; sens trigo : -1
     public int movingTo = 0;
-    public Transform[] PathSequence;
+    public GameObject[] PathSequence;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +21,24 @@ public class MovementPath : MonoBehaviour
     void Update()
     {
         
+    }
+
+
+    public MovementPath(List<GameObject> path){
+        PathSequence = path.ToArray();
+        pathType = PathTypes.unique_use;
+    }
+
+    public List<GameObject> getPathList(){
+        List<GameObject> list = new List<GameObject>();
+        list.AddRange(PathSequence);
+        return list;
+    }
+
+    public void setPath(List<GameObject> path){
+        path.Reverse();
+        PathSequence = path.ToArray();
+        pathType = PathTypes.unique_use;
     }
 
     //Draws lines between our points in the Unity Editor
@@ -35,11 +53,11 @@ public class MovementPath : MonoBehaviour
 
         for(int i=1; i < length; i++){
             //Draw lines
-            Gizmos.DrawLine(PathSequence[i-1].position, PathSequence[i].position);
+            Gizmos.DrawLine(PathSequence[i-1].transform.position, PathSequence[i].transform.position);
         }
 
         if(pathType == PathTypes.loop){
-            Gizmos.DrawLine(PathSequence[0].position, PathSequence[length-1].position);
+            Gizmos.DrawLine(PathSequence[0].transform.position, PathSequence[length-1].transform.position);
         }
     }
 
@@ -56,7 +74,7 @@ public class MovementPath : MonoBehaviour
 
             //Return the current point in PathSequence
             //and wait for next call of enumerator (prevents infinite loop)
-            yield return PathSequence[movingTo];
+            yield return PathSequence[movingTo].transform;
 
 
             //If there is only one point exit the coroutine
