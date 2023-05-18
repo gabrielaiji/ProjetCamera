@@ -12,6 +12,7 @@ public class Interpolateur : MonoBehaviour
     public float pas;
 
     public GameObject pointPrefab;
+    public bool display = true;
 
     private List<float> T;
     private List<float> tToEval;
@@ -33,12 +34,22 @@ public class Interpolateur : MonoBehaviour
             return;
         }
 
+        foreach(GameObject point in path.getPathList()){
+            CameraView camView = point.GetComponent<CameraView>();
+            camView.setDisplay(this.display);
+        }
+
         int nbElem = path.PathSequence.Length;
         (T,tToEval) = buildParametrisationTchebycheff(nbElem, pas);
 
         applyNevilleParametrisation(path.getPathList(), T, tToEval);
         // MovementPath path_interpole = new MovementPath(points_interpoles);
         path.setPath(points_interpoles);
+
+        foreach(GameObject point in points_interpoles){
+            CameraView camView = point.GetComponent<CameraView>();
+            camView.setDisplay(this.display);
+        }
         //camera.setMovementPath(points_interpoles);
         camera.initialize();
 

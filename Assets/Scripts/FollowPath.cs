@@ -36,9 +36,11 @@ public class FollowPath : MonoBehaviour
             //if moving towards
             if(movementType == MovementTypes.MoveTowards){
                 transform.position = Vector3.MoveTowards(transform.position, pointInPath.Current.position, Time.deltaTime * speed);
-                Vector3 angles = pointInPath.Current.rotation.eulerAngles;
-                angles.y +=90;
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(angles), Time.deltaTime * speed*10);
+                //Vector3 angles = pointInPath.Current.rotation.eulerAngles;
+                //angles.y +=90;
+                //transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(angles), Time.deltaTime * speed*10);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, pointInPath.Current.rotation, Time.deltaTime * speed*10);
+
             }
 
             //else if lerping
