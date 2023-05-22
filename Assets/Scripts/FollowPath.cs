@@ -11,7 +11,7 @@ public class FollowPath : MonoBehaviour
     private IEnumerator<Transform> pointInPath; //Utilise pour referencer les points retournes par paht.GetNextPathPoint
 
     public bool onGameStart = false;
-    private bool enabled = false;
+    private bool enabledCoroutine = false;
 
 
     // Start is called before the first frame update
@@ -19,14 +19,14 @@ public class FollowPath : MonoBehaviour
     {
         if(onGameStart){
             initialize();
-            enabled = true;
+            enabledCoroutine = true;
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(enabled){
+        if(enabledCoroutine){
 
             // On verifie s'il y a un chemin assigne et si
             // le chemin est non nul
@@ -71,7 +71,7 @@ public class FollowPath : MonoBehaviour
 
         // On place l'objet actuel à la position du premier point
         transform.position = pointInPath.Current.position;
-        enabled = true;
+        enabledCoroutine = true;
     }
 
     public void setMovementPath(MovementPath path){

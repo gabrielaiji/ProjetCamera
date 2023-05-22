@@ -11,7 +11,7 @@ public class Interpolateur : MonoBehaviour
     public ParametrisationTypes parametrisationType;
 
     public MovementPath path;
-    public FollowPath camera;
+    public FollowPath cameraPath;
 
     public float pas = 0.01f;
 
@@ -37,7 +37,7 @@ public class Interpolateur : MonoBehaviour
         }
 
         //On verifie si une camera (camera) a bien ete assigne
-        if(camera == null){
+        if(cameraPath == null){
             Debug.LogError("No Camera assigned to follow", gameObject);
             return;
         }
@@ -71,7 +71,7 @@ public class Interpolateur : MonoBehaviour
         }
         
         //On commence le mouvement de la camera
-        camera.initialize();
+        cameraPath.initialize();
     }
 
     // Update is called once per frame

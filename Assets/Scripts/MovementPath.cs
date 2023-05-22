@@ -101,7 +101,12 @@ public class MovementPath : MonoBehaviour
 
                 // Si on a la fin du chemin et le mouvement est lineaire
                 // on change de direction
-                else if(movingTo >= length-1 && pathType == PathTypes.linear){
+                else if(movingTo >= length-1){
+
+                    // Si utilisation unique on arrete
+                    if(pathType == PathTypes.unique_use){
+                        continue;
+                    }
 
                     movementDirection = -1; //On change la direction
                 }
