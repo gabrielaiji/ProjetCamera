@@ -6,7 +6,7 @@ public class MovementPath : MonoBehaviour
 {
     public enum PathTypes {linear, loop, unique_use}
 
-    public PathTypes pathType;
+    private PathTypes pathType;
     public int movementDirection = 1; //sens horaire : 1 ; sens trigo : -1
     public int movingTo = 0;
     public GameObject[] PathSequence;
@@ -36,27 +36,32 @@ public class MovementPath : MonoBehaviour
     }
 
     public void setPath(List<GameObject> path){
-        path.Reverse();
+        //path.Reverse();
         PathSequence = path.ToArray();
         pathType = PathTypes.unique_use;
     }
 
-    //Draws lines between our points in the Unity Editor
+    public void setPathType(PathTypes pathType){
+        this.pathType = pathType;
+    }
+
+    //Permet de tracer les lignes entres les points dans l'editeur Unity
     public void OnDrawGizmos() {
 
         int length = PathSequence.Length;
         
-        // if no lines to draw, do nothing
+        // Si vide ou un seul point, ne rien faire
         if(PathSequence == null || length < 2){
             return;
         }
 
         for(int i=1; i < length; i++){
-            //Draw lines
+            // On trace la ligne
             Gizmos.DrawLine(PathSequence[i-1].transform.position, PathSequence[i].transform.position);
         }
 
         if(pathType == PathTypes.loop){
+            // Si il s'agit d'une boucle on peut trace un trait entre le dernier et le premier point
             Gizmos.DrawLine(PathSequence[0].transform.position, PathSequence[length-1].transform.position);
         }
     }
@@ -65,56 +70,55 @@ public class MovementPath : MonoBehaviour
     public IEnumerator<Transform> GetNextPathPoint(){
         int length = PathSequence.Length;
         
-        // if no points, do nothing
+        // Si pas de point, ne rien faire
         if(PathSequence == null || length < 1){
             yield break;
         }
 
         while(true){
 
-            //Return the current point in PathSequence
-            //and wait for next call of enumerator (prevents infinite loop)
+            // Retourne le point courant dans la PathSequence
+            // et attend pour le prochain appel de l'enumerateur (pour empecher des boucles infini)
             yield return PathSequence[movingTo].transform;
 
 
-            //If there is only one point exit the coroutine
+            //S'il y a un seul point on sort de la coroutine
             if(length == 1){
                 continue;
             }
             
 
-            //If linear path move from start to end, then end to start, and repeat
+            // Si le mouvement est linéaire on va du début à la fin, puis de la fin au début
+            // et on repete
+            // Si le mouvement est d'utilisation unique, on va juste une fois, du début
+            // a la fin.
             if(pathType == PathTypes.linear || pathType == PathTypes.unique_use){
 
-                //If you are at the begining of the path
+                // Si on est au point 0
                 if(movingTo <= 0){
-                    movementDirection = 1; // Setting to 1 moves forward
+                    movementDirection = 1; // On renvoie le point 1 (le 2e)
                 }
 
-                //else if you are at the end of your path
-                else if(movingTo >= length-1){
+                // Si on a la fin du chemin et le mouvement est lineaire
+                // on change de direction
+                else if(movingTo >= length-1 && pathType == PathTypes.linear){
 
-                    //if unique_use stop
-                    if(pathType == PathTypes.unique_use){
-                        continue;
-                    }
-
-                    movementDirection = -1; //Setting to -1 moves backwards
+                    movementDirection = -1; //On change la direction
                 }
             }
             
-            //Change movingTo, forward or backwards
+            // On change le point vers lequel il faut maintenant se diriger
             movingTo = movingTo + movementDirection;
 
-            //If looping path, move from start to end, then jump from end to start, and repeat
+            // Si le mouvement est une boucle, on va du debut a la fin, et on recommence
             if(pathType == PathTypes.loop){
-                //If reached last point, moving forward
+                // Si on atteint le dernier point
                 if(movingTo >= length){
-                    //Set the next point to the start
+                    //On recommence le mouvement
                     movingTo = 0;
                 }
 
-                //If reached first point, moving backwards
+                // Pour un peu de robustesse
                 if(movingTo < 0){
                     movingTo = length -1;
                 }
