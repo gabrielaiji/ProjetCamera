@@ -21,8 +21,6 @@ public class Interpolateur : MonoBehaviour
     // la camera passe
     public bool display = true;
 
-    public MovementPath.PathTypes pathType;
-
     private List<float> T;
     private List<float> tToEval;
 
@@ -63,7 +61,7 @@ public class Interpolateur : MonoBehaviour
         //Application de l'algorithme de Neuville
         applyNevilleParametrisation(path.getPathList(), T, tToEval);
         path.setPath(points_interpoles);
-        path.setPathType(pathType);
+        path.setPathType(MovementPath.PathTypes.unique_use);
 
 
         //Cette boucle permet d'afficher ou non les points interpoles de la camera
@@ -245,10 +243,6 @@ public class Interpolateur : MonoBehaviour
         return (Position_Inter[n-2,0],Rot_Inter[n-2,0]) ;
     }
 
-    //Permet de tracer les lignes entres les points dans l'editeur Unity
-    public void OnDrawGizmos() {
-        path.setPathType(pathType);
 
-    }
 
 }

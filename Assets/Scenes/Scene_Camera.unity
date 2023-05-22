@@ -2228,8 +2228,7 @@ MonoBehaviour:
   pas: 0.01
   pointPrefab: {fileID: 6011107628176344249, guid: 6d4d1d2310b66ef4aa6f8b3b3db98a0a,
     type: 3}
-  display: 0
-  pathType: 0
+  display: 1
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
