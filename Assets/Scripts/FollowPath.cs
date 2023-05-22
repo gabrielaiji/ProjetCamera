@@ -71,6 +71,7 @@ public class FollowPath : MonoBehaviour
 
         // On place l'objet actuel à la position du premier point
         transform.position = pointInPath.Current.position;
+        transform.rotation = pointInPath.Current.rotation;
         enabledCoroutine = true;
     }
 
