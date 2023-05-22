@@ -7,6 +7,7 @@ public class CameraView : MonoBehaviour
     public bool display;
     public MeshRenderer position;
     public MeshRenderer direction;
+    public MeshRenderer up;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,10 +29,12 @@ public class CameraView : MonoBehaviour
         if(display){
             position.enabled = true;
             direction.enabled = true;
+            up.enabled = true;
         }
         else{
             position.enabled = false;
             direction.enabled = false;
+            up.enabled = false;
         }
     }
 }
